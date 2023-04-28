@@ -50,13 +50,15 @@ async def root(search_index: SearchIndexLabel, query: Annotated[str, Query(max_l
 
 ## Helper functions
 ## ------------------------------------------------------------------
+def _make_video_uri(doc_id, start):
+    return f"https://netology-group.services/webinar-foxford/dispatcher/api/v1/redirs/tenants/foxford/apps/webinar?embedded_origin=https://foxford.ru&scope={doc_id}&t={start}"
+
 def _postprocess_ir_outputs(outputs):
     for line in outputs.strip().split('\n'):
         text, doc_id, start, distance = line.split('\t')
         yield {
             "text": text,
-            "doc_id": doc_id,
-            "start": int(start),
+            "uri": _make_video_uri(doc_id, start),
             "distance": float(distance),
         }
 
@@ -65,8 +67,7 @@ def _preprocess_rerank_inputs(query, outputs):
         text, doc_id, start, distance = line.split('\t')
         meta = {
             "text": text,
-            "doc_id": doc_id,
-            "start": int(start),
+            "uri": _make_video_uri(doc_id, start),
             "distance": float(distance),
         }
         data = [query, text]
