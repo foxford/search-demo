@@ -19,7 +19,7 @@ on:
       release:
         description: 'Release name'
         required: false
-        default: search_demo
+        default: search-demo
 
 jobs:
   deploy:

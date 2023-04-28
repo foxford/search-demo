@@ -13,7 +13,7 @@ networkTester:
 
 app:
   image:
-    repository: cr.yandex/crp1of6bddata8ain3q5/search_demo
+    repository: cr.yandex/crp1of6bddata8ain3q5/search-demo
 
   resources:
     requests:

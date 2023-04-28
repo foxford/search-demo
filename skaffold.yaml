@@ -2,7 +2,7 @@ apiVersion: skaffold/v2beta11
 kind: Config
 build:
   artifacts:
-  - image: cr.yandex/crp1of6bddata8ain3q5/search_demo
+  - image: cr.yandex/crp1of6bddata8ain3q5/search-demo
     docker:
       dockerfile: docker/Dockerfile
   tagPolicy:
@@ -14,10 +14,10 @@ build:
 deploy:
   helm:
     releases:
-    - name: search_demo
+    - name: search-demo
       chartPath: chart
       artifactOverrides:
-        app.image: cr.yandex/crp1of6bddata8ain3q5/search_demo
+        app.image: cr.yandex/crp1of6bddata8ain3q5/search-demo
       imageStrategy:
         helm: {}
       valuesFiles:

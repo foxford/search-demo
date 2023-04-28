@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "search_demo.name" -}}
+{{- define "search-demo.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "search_demo.fullname" -}}
+{{- define "search-demo.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,32 +26,32 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "search_demo.chart" -}}
+{{- define "search-demo.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}} # TODO
-{{- define "search_demo.labels" -}}
-helm.sh/chart: {{ include "search_demo.chart" . }}
+{{- define "search-demo.labels" -}}
+helm.sh/chart: {{ include "search-demo.chart" . }}
 app.kubernetes.io/version: {{ .Values.app.image.tag | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{ include "search_demo.selectorLabels" . }}
+{{ include "search-demo.selectorLabels" . }}
 {{- end }}
 
 {{/*
 Selector labels
 */}}
-{{- define "search_demo.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "search_demo.name" . }}
+{{- define "search-demo.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "search-demo.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Tenant Service Audience
 */}}
-{{- define "search_demo.tenantServiceAudience" -}}
+{{- define "search-demo.tenantServiceAudience" -}}
 {{- $tenant := . -}}
 {{- list "svc" $tenant | join "." -}}
 {{- end -}}
@@ -59,7 +59,7 @@ Tenant Service Audience
 {{/*
 Tenant User Audience
 */}}
-{{- define "search_demo.tenantUserAudience" -}}
+{{- define "search-demo.tenantUserAudience" -}}
 {{- $tenant := . -}}
 {{- list "usr" $tenant | join "." -}}
 {{- end -}}
@@ -67,7 +67,7 @@ Tenant User Audience
 {{/*
 Tenant Object Audience
 */}}
-{{- define "search_demo.tenantObjectAudience" -}}
+{{- define "search-demo.tenantObjectAudience" -}}
 {{- $namespace := index . 0 -}}
 {{- $tenant := index . 1 -}}
 {{- $env := regexSplit "-" $namespace -1 | first -}}
@@ -83,10 +83,10 @@ Tenant Object Audience
 Namespace in ingress path.
 converts as follows:
 - testing01 -> t01
-- staging01-search_demo-ng -> s01/search_demo-ng
-- production-search_demo-ng -> search_demo-ng
+- staging01-search-demo-ng -> s01/search-demo-ng
+- production-search-demo-ng -> search-demo-ng
 */}}
-{{- define "search_demo.ingressPathNamespace" -}}
+{{- define "search-demo.ingressPathNamespace" -}}
 {{- $ns_head := regexSplit "-" .Release.Namespace -1 | first }}
 {{- $ns_tail := regexSplit "-" .Release.Namespace -1 | rest | join "-" }}
 {{- if has $ns_head (list "production" "p") }}
@@ -100,15 +100,15 @@ converts as follows:
 {{/*
 Ingress path.
 */}}
-{{- define "search_demo.ingressPath" -}}
+{{- define "search-demo.ingressPath" -}}
 {{- $shortns := regexSplit "-" .Release.Namespace -1 | first }}
-{{- list "" (include "search_demo.ingressPathNamespace" .) (include "search_demo.name" .) | join "/" }}
+{{- list "" (include "search-demo.ingressPathNamespace" .) (include "search-demo.name" .) | join "/" }}
 {{- end }}
 
 {{/*
 Create volumeMount name from audience and secret name
 */}}
-{{- define "search_demo.volumeMountName" -}}
+{{- define "search-demo.volumeMountName" -}}
 {{- $audience := index . 0 -}}
 {{- $secret := index . 1 -}}
 {{- printf "%s-%s-secret" $audience $secret | replace "." "-" | trunc 63 | trimSuffix "-" }}

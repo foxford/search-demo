@@ -1,7 +1,7 @@
 apiVersion: v2
-name: search_demo
+name: search-demo
 description: Semantic search demo service
-home: https://github.com/foxford/search_demo
+home: https://github.com/foxford/search-demo
 
 # A chart can be either an 'application' or a 'library' chart.
 #

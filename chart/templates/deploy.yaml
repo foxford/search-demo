@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "search_demo.fullname" . }}
+  name: {{ include "search-demo.fullname" . }}
   labels:
-    {{- include "search_demo.labels" . | nindent 4 }}
+    {{- include "search-demo.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   minReadySeconds: {{ .Values.minReadySeconds }}
   selector:
     matchLabels:
-      {{- include "search_demo.selectorLabels" . | nindent 6 }}
+      {{- include "search-demo.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "search_demo.labels" . | nindent 8 }}
+        {{- include "search-demo.labels" . | nindent 8 }}
     spec:
       imagePullSecrets:
         - name: regcred
@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: IfNotPresent
           name: network-tester
       containers:
-        - name: search_demo
+        - name: search-demo
           image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
           ports:
             - containerPort: {{ .Values.clusterService.ports.http }}
