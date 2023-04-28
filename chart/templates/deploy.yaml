@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "search-demo.fullname" . }}
+  labels:
+    {{- include "search-demo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
+  selector:
+    matchLabels:
+      {{- include "search-demo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "search-demo.labels" . | nindent 8 }}
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      initContainers:
+        - image: "{{ .Values.networkTester.image.repository }}:{{ .Values.networkTester.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          name: network-tester
+      containers:
+        - name: search-demo
+          image: "{{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.clusterService.ports.http }}
+          env:
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | default "" | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.app.resources | nindent 12 }}
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.clusterService.ports.http }}
+            failureThreshold: 60
+            periodSeconds: 10
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sleep", "{{ .Values.preStopSleepSeconds }}"]
