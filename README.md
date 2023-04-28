@@ -1,1 +1,1 @@
-# search_demo
+Semantic search demo
