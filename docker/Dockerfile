@@ -1,9 +1,8 @@
 FROM python:3.11-slim
 
-WORKDIR "/app"
-COPY requirements.txt /app/requirements.txt
-COPY main.py /app/main.py
+COPY requirements.txt main.py /app/
 
+WORKDIR /app/
 RUN pip install -U pip gunicorn==20.1.0
 RUN pip install -r requirements.txt
 
