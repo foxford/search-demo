@@ -23,7 +23,7 @@ on:
 
 jobs:
   deploy:
-    uses: foxford/reusable-workflows/.github/workflows/deploy-via-flux.yml@master
+    uses: foxford/reusable-workflows/.github/workflows/deploy-via-flux.yml@v1
     with:
       cluster: ${{ inputs.cluster }}
       namespace: ${{ inputs.namespace }}
