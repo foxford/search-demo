@@ -14,10 +14,11 @@ jobs:
     secrets:
       helm_registry_username: ${{ secrets.YANDEX_HELM_USERNAME }}
       helm_registry_password: ${{ secrets.YANDEX_HELM_PASSWORD }}
-
   build-image:
     if: startsWith(github.ref, 'refs/tags/')
     uses: foxford/reusable-workflows/.github/workflows/build-release-image.yml@v1
     secrets:
       docker_registry_username: ${{ secrets.YANDEX_DOCKER_USERNAME }}
       docker_registry_password: ${{ secrets.YANDEX_DOCKER_PASSWORD }}
+      cosign_private_key: ${{ secrets.COSIGN_PRIVATE_KEY }}
+      cosign_password: ${{ secrets.COSIGN_PASSWORD }}
